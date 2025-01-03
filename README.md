@@ -27,24 +27,31 @@ This project is a simple URL shortener service built with C#. It provides an API
 #### Note: Before running the application with docker-compose up, you need to run the database migrations.
 
 1. Clone the repository:
-
    ```sh
    git clone https://github.com/yourusername/urlshortener.git
    cd urlshortener
    ```
+   
 2. Start the database container:
    ```sh
-   docker-compose up urlshortener-db
+   docker-compose up urlshortener-db -d
    ```
    
 3. Run the migrations:  
    ```sh
-   docker-compose run urlshortener.api dotnet ef database update
+   cd Urlshortener.Api
+   dotnet ef database update
    ```
    
-4. Now you can start the application:  
+4. Set the flag "UseLocalConnection" in appsetting.json to false:  
+   ```json
+   "UseLocalConnection": false
+   ```
+   
+5. Now you can start the application:  
    ```sh
-   docker-compose up --build
+   cd ..
+   docker-compose up --build -d
    ```
    
 5. The API will be available at `http://localhost:5001`.
