@@ -1,0 +1,21 @@
+﻿services:
+  urlshortener-db:
+    image: mcr.microsoft.com/mssql/server
+    container_name: urlshortener.Db
+    volumes:
+      - ./.containers/database:/var/opt/mssql/data
+    ports:
+      - "1400:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password123"
+  
+  urlshortener.api:
+    image: urlshortener.api
+    build:
+      context: .
+      dockerfile: Urlshortener.Api/Dockerfile
+    ports:
+      - "5001:8080"
+    depends_on:
+      - urlshortener-db
