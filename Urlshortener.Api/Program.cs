@@ -10,9 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var useLocalConnection = builder.Configuration.GetValue<bool>("UseLocalConnection");
+var connectionString = useLocalConnection 
+    ? builder.Configuration.GetConnectionString("LocalConnection") 
+    : builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ApplicationDbContext>(o => 
-    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    o.UseSqlServer(connectionString));
 builder.Services.AddScoped<UrlShorteningService>();
+
 
 var app = builder.Build();
 
